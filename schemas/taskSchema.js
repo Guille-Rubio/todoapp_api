@@ -1,11 +1,15 @@
+const { UUID } = require('bson');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const uuid = require('uuid');
+
 
 const task = new Schema({
-    task: String, // String is shorthand for {type: String}
-    position: Number,
-    completed: Boolean,
-    date: { type: Date },
+    title: String, // String is shorthand for {type: String}
+    position: Number,//Set default number? 
+    completed: { type: Boolean, default: false },
+    date: { type: Date, default: Date.now },
+    id: { type: String, default: () => uuid.v4() }
 
 });
 
