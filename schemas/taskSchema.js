@@ -9,7 +9,8 @@ const task = new Schema({
     position: Number,//Set default number? 
     completed: { type: Boolean, default: false },
     date: { type: Date, default: Date.now },
-    id: { type: String, default: () => uuid.v4() }
+    id: { type: String, default: () => uuid.v4() },
+    email: { type: String, trim: true, lowercase: true }
 
 });
 
