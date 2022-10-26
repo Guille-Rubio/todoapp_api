@@ -4,11 +4,16 @@ const tokens = require('../utils/tokens');
 
 const getAllUserTasks = async (req, res) => {
     try {
-        const { cookie } = req.headers;
-        const accessToken = cookie.slice(cookie.indexOf("=") + 1, cookie.indexOf(";"));
-        const email = await tokens.decodeToken(accessToken).email;
-        const all = await Task.find({ email: email });
-        res.status(200).json(all);
+        if (req.headers.cookie.indexOf('access-token') !== -1) {
+            const { cookie } = req.headers;
+            const accessToken = cookie.slice(cookie.indexOf("=") + 1, cookie.indexOf(";"));
+            const email = await tokens.decodeToken(accessToken).email;
+            const all = await Task.find({ email: email });
+            res.status(200).json(all);
+        }
+        else {
+            res.status(401);
+        }
 
     } catch (e) {
         res.status(400).json({ msg: "bad request" });

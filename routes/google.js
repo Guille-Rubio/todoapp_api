@@ -8,11 +8,10 @@ googleRouter.get("/auth/google", passport.authenticate("google", { scope: ['emai
 
 googleRouter.get("/callback",
     //Función de fallo
-    passport.authenticate('google', { failureRedirect: 'google/auth/failure' }),
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/google/auth/failure' }),
     //Función exitosa
     async (req, res) => {
-  
-       
+
         const payload = {
             user: req.user._json.name,
             email: req.user._json.email,
@@ -26,6 +25,7 @@ googleRouter.get("/callback",
             httpOnly: true,
             sameSite: "strict",
         }).status(302).redirect('http://localhost:3000');
+
     });
 
 
