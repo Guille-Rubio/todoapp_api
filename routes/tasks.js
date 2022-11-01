@@ -5,6 +5,7 @@ const tasks = require('../controllers/tasks');
 taskRouter.get('/', tasks.getAllUserTasks);
 taskRouter.post('/', tasks.createTask);
 taskRouter.put('/', tasks.editTask);
+taskRouter.post('/edit-positions', tasks.editTaskPosition)
 taskRouter.delete('/', tasks.deleteTask);
 taskRouter.delete('/all', tasks.deleteAllTasks);
 

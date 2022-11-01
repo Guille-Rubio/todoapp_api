@@ -8,7 +8,7 @@ const getAllUserTasks = async (req, res) => {
             const { cookie } = req.headers;
             const accessToken = cookie.slice(cookie.indexOf("=") + 1, cookie.indexOf(";"));
             const email = await tokens.decodeToken(accessToken).email;
-            const all = await Task.find({ email: email });
+            const all = await Task.find({ email: email }).sort({position:"asc"});
             res.status(200).json(all);
         }
         else {
@@ -47,6 +47,64 @@ const editTask = async (req, res) => {
     }
 };
 
+const editTaskPosition = async (req, res) => {
+    try {
+        const { cookie } = req.headers;
+        const accessToken = cookie.slice(cookie.indexOf("=") + 1, cookie.indexOf(";"));
+        const email = await tokens.decodeToken(accessToken).email;
+        const { dragItem, dragOverItem } = req.body;
+        console.log("dragItem ", dragItem, "dragOverItem ", dragOverItem)
+
+        let draggedItem;
+        let movedItems;
+
+        if (dragItem < dragOverItem) {
+            //Actualiza posicion del item arrastrado
+            draggedItem = await Task.findOneAndUpdate(
+                { email: email, position: dragItem },
+                { position: dragOverItem },
+                { new: true });
+
+            movedItems = await Task.updateMany(
+                {
+                    id: { $ne: draggedItem.id },
+                    email: email,
+                    position: {
+                        $gt: dragItem,
+                        $lte: dragOverItem
+                    }
+                },
+                { $inc: { position: -1 } },
+                { new: true });
+        }
+
+        if (dragItem > dragOverItem) {
+            draggedItem = await Task.findOneAndUpdate(
+                { email: email, position: dragItem },
+                { position: dragOverItem },
+                { new: true });
+
+            movedItems = await Task.updateMany(
+                {
+                    id: { $ne: draggedItem.id },
+                    email: email,
+                    position: {
+                        $gte: dragOverItem,
+                        $lte: dragItem
+                    }
+                },
+                { $inc: { position: 1 } },
+                { returnOriginal: false });
+        }
+
+        res.status(200).json({ draggedItem, movedItems });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({ msg: "bad request" });
+    }
+}
+
 const deleteTask = async (req, res) => {
     try {
         const { id } = req.body;
@@ -72,6 +130,7 @@ const tasks = {
     getAllUserTasks,
     createTask,
     editTask,
+    editTaskPosition,
     deleteTask,
     deleteAllTasks
 };
