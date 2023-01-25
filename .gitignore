@@ -105,3 +105,4 @@ dist
 
 # Google Drive
 .DS_Store
+.vercel
