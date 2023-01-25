@@ -2,13 +2,14 @@ const express = require('express');
 const googleRouter = express();
 const tokens = require('../utils/tokens');
 const passport = require('passport');
+const baseUrl = require('../utils/environment');
 
 
 googleRouter.get("/auth/google", passport.authenticate("google", { scope: ['email', 'profile'], prompt: "select_account" }));
 
 googleRouter.get("/callback",
     //Función de fallo
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/google/auth/failure' }),
+    passport.authenticate('google', { failureRedirect: `${baseUrl}/google/auth/failure` }),
     //Función exitosa
     async (req, res) => {
 
@@ -24,7 +25,7 @@ googleRouter.get("/callback",
         res.cookie("access-token", token, {
             httpOnly: true,
             sameSite: "strict",
-        }).status(302).redirect('http://localhost:3000');
+        }).status(302).redirect(`${baseUrl}`);
 
     });
 
@@ -39,7 +40,7 @@ googleRouter.get('/logout', (req, res) => {
     req.logout(function (err) {
         if (err) { return next(err); }
         req.session.destroy();
-        res.clearCookie("access-token").redirect('http://localhost:3000');
+        res.clearCookie("access-token").redirect(`${baseUrl}`);
     });
 
 });

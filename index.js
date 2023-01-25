@@ -10,7 +10,8 @@ const tokens = require('./utils/tokens');
 
 
 const passport = require('passport');
-const port = 5000;
+const baseUrl = require('./utils/environment');
+const port = process.env.PORT || 5000;
 const Task = require('./schemas/taskSchema');
 const cors = require('cors');
 
@@ -27,7 +28,7 @@ app.use(passport.session());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: `${baseUrl}` }));
 app.use(morgan(':method :url :host :status :param[id] - :response-time ms :body'));
 
 app.use('/google', googleRouter);
