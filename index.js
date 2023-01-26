@@ -48,13 +48,12 @@ app.get('/active-user', async (req, res) => {
 
     } catch (error) {
         res.status(400).json({ msg: "no active user" })
-
     }
-
-
-
 })
 
+app.get('/', (req, res) => {
+    res.status(200).json({ msg: "Up and running!" })
+})
 
 
 app.listen(port, () => {
