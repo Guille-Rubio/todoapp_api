@@ -2,8 +2,7 @@ const express = require('express');
 const googleRouter = express();
 const tokens = require('../utils/tokens');
 const passport = require('passport');
-const baseUrl = require('../utils/environment');
-
+const baseUrl = "http://localhost:3000"
 
 googleRouter.get("/auth/google", passport.authenticate("google", { scope: ['email', 'profile'], prompt: "select_account" }));
 
