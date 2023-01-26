@@ -2,7 +2,7 @@ const express = require('express');
 const googleRouter = express();
 const tokens = require('../utils/tokens');
 const passport = require('passport');
-const baseUrl = "http://localhost:3000"
+const baseUrl = "https://to-do-app-api-fawn.vercel.app"
 
 googleRouter.get("/auth/google", passport.authenticate("google", { scope: ['email', 'profile'], prompt: "select_account" }));
 
