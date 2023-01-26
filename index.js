@@ -28,7 +28,7 @@ app.use(passport.session());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: `${baseUrl}` }));
+app.use(cors({ credentials: true, origin: [`${baseUrl}`, "http://localhost:3000"] }));
 app.use(morgan(':method :url :host :status :param[id] - :response-time ms :body'));
 
 app.use('/google', googleRouter);
