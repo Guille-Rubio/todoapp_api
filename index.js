@@ -2,9 +2,7 @@ const express = require('express');
 require('dotenv').config();
 require('./config/mongoDBconnection');
 require('./config/googleAuth');
-if (process.env.NODE_ENV !== 'production') {
-    const morgan = require('./config/morganConfig');
-}
+
 const app = express();
 const session = require('express-session');
 
@@ -31,7 +29,12 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ credentials: true, origin: [`${baseUrl}`, "http://localhost:3000"] }));
-app.use(morgan(':method :url :host :status :param[id] - :response-time ms :body'));
+
+if (process.env.NODE_ENV !== 'production') {
+    const morgan = require('./config/morganConfig');
+    app.use(morgan(':method :url :host :status :param[id] - :response-time ms :body'));
+}
+
 
 app.use('/google', googleRouter);
 app.use('/tasks', taskRouter);
