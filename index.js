@@ -2,15 +2,17 @@ const express = require('express');
 require('dotenv').config();
 require('./config/mongoDBconnection');
 require('./config/googleAuth');
-const morgan = require('./config/morganConfig');
+if (process.env.NODE_ENV !== production) {
+    const morgan = require('./config/morganConfig');
+}
 const app = express();
 const session = require('express-session');
 
 const tokens = require('./utils/tokens');
 
 
-const passport = require('passport');
 const baseUrl = require('./utils/environment');
+const passport = require('passport');
 const port = process.env.PORT || 5000;
 const Task = require('./schemas/taskSchema');
 const cors = require('cors');
