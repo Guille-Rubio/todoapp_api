@@ -10,7 +10,7 @@ const configParams = {
 
 
 
-mongoose.connect(process.env.MONGO_DB_CONNECTION, configParams);
+mongoose.connect(process.env.MONGODB_URI, configParams);
 
 const db = mongoose.connection;
 
