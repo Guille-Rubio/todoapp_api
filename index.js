@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config();
 require('./config/mongoDBconnection');
 require('./config/googleAuth');
-if (process.env.NODE_ENV !== production) {
+if (process.env.NODE_ENV !== 'production') {
     const morgan = require('./config/morganConfig');
 }
 const app = express();
