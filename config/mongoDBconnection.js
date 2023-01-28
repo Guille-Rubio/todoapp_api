@@ -8,23 +8,25 @@ const configParams = {
     sslValidate: false,
 };
 
+const connectMongoDb = async () => {
+    try {
+        mongoose.connect(process.env.MONGODB_URI, configParams);
+
+        const db = mongoose.connection;
+
+        db.on("error", console.error.bind(console, "connection error: "));
+        db.once("open", function () {
+            console.log("Mongo DB Connected successfully");
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 
-mongoose.connect(process.env.MONGODB_URI, configParams);
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-    console.log("Mongo DB Connected successfully");
-});
 
 
 
-
-
-
-
-module.exports = mongoose
+module.exports = { connectMongoDb, mongoose }
 
 

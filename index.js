@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-require('./config/mongoDBconnection');
+const { connectMongoDb } = require('./config/mongoDBconnection');
 require('./config/googleAuth');
 
 const app = express();
@@ -63,5 +63,6 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
-    console.log(process.env)
+    connectMongoDb();
+    console.log(process.env.NODE_ENV)
 });
